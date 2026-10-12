@@ -253,7 +253,7 @@ function App() {
               onClick={() => setShowNotifications((current) => !current)}
             >
               <Bell size={17} />
-              <span className="notification-badge">{data.stats.lowStockCount + 1}</span>
+              {notificationCount(data) > 0 && <span className="notification-badge">{notificationCount(data)}</span>}
             </button>
             <button className="user-chip" onClick={() => navigate('profiles')}>
               <span className="avatar avatar-small avatar-orange">{activeProfile?.displayName.slice(0, 1) || 'M'}</span>
@@ -363,27 +363,52 @@ function LoadingScreen() {
 
 function NotificationPopover({ data, onClose }: { data: BootstrapData; onClose: () => void }) {
   const lowStock = data.medications.filter((med) => med.stockAmount <= med.lowStockThreshold);
+  const nextDose = getNextActionableDose(data.doses);
+  const totalNotifications = lowStock.length + (nextDose ? 1 : 0);
   return (
     <div className="notification-popover">
       <div className="popover-head">
         <div>
           <span className="eyebrow">ЦЕНТР УВЕДОМЛЕНИЙ</span>
-          <strong>{lowStock.length + 1} события требуют внимания</strong>
+          <strong>{totalNotifications ? totalNotifications + ' события требуют внимания' : 'Нет новых событий'}</strong>
         </div>
         <button className="icon-button" onClick={onClose} aria-label="Закрыть"><X size={15} /></button>
       </div>
-      <div className="popover-item popover-item-accent">
-        <BellRing size={16} />
-        <div><strong>Следующий прием через 42 мин</strong><span>Магний B6 • 13:30</span></div>
-      </div>
+      {nextDose && (
+        <div className="popover-item popover-item-accent">
+          <BellRing size={16} />
+          <div><strong>{doseNotificationTitle(nextDose.scheduledAt)}</strong><span>{nextDose.medicationName} • {formatTime(nextDose.scheduledAt)}</span></div>
+        </div>
+      )}
       {lowStock.map((med) => (
         <div className="popover-item" key={med.id}>
           <AlertTriangle size={16} />
           <div><strong>Заканчивается {med.name}</strong><span>Осталось {med.stockAmount} {med.stockUnit}</span></div>
         </div>
       ))}
+      {!totalNotifications && <div className="popover-empty">Новых событий нет</div>}
     </div>
   );
+}
+
+function getNextActionableDose(doses: Dose[]) {
+  return [...doses]
+    .filter((dose) => dose.status === 'scheduled' || dose.status === 'reminder_sent' || dose.status === 'snoozed' || dose.status === 'rescheduled')
+    .sort((a, b) => new Date(a.scheduledAt).getTime() - new Date(b.scheduledAt).getTime())[0];
+}
+
+function notificationCount(data: BootstrapData) {
+  const lowStockCount = data.medications.filter((med) => med.stockAmount <= med.lowStockThreshold).length;
+  return lowStockCount + (getNextActionableDose(data.doses) ? 1 : 0);
+}
+
+function doseNotificationTitle(scheduledAt: string) {
+  const minutes = Math.floor((new Date(scheduledAt).getTime() - Date.now()) / 60000);
+  if (minutes <= 0) return 'Прием уже ожидает подтверждения';
+  if (minutes < 60) return 'Следующий прием через ' + minutes + ' мин';
+  const hours = Math.floor(minutes / 60);
+  const remainingMinutes = minutes % 60;
+  return 'Следующий прием через ' + hours + ' ч' + (remainingMinutes ? ' ' + remainingMinutes + ' мин' : '');
 }
 
 function PageHeading({
