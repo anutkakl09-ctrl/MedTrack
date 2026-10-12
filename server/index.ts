@@ -984,7 +984,7 @@ if (fs.existsSync(frontendPath)) {
   });
 }
 
-app.listen(port, () => {
+app.listen(port, '0.0.0.0', () => {
   console.log('MedTrack API listening on http://localhost:' + port);
   console.log('MedTrack mode: ' + (demoMode ? 'demo' : 'telegram production'));
   console.log('MedTrack data file: ' + dataPath);
