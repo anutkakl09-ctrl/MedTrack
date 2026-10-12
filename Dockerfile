@@ -19,7 +19,8 @@ RUN npm ci --omit=dev
 COPY --from=build /app/server ./server
 COPY --from=build /app/dist ./dist
 COPY --from=build /app/tsconfig.json ./tsconfig.json
+COPY --from=build /app/index.js ./index.js
 
 EXPOSE 4000
 
-CMD ["npm", "run", "start:all"]
+CMD ["node", "index.js"]

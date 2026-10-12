@@ -3,6 +3,7 @@
   "private": true,
   "version": "0.1.0",
   "description": "MedTrack — Telegram Mini App для учета приема лекарств",
+  "main": "index.js",
   "type": "module",
   "scripts": {
     "dev": "concurrently -n api,web,bot,worker -c magenta,cyan,yellow,green \"npm run dev:api\" \"npm run dev:web\" \"npm run dev:bot\" \"npm run dev:worker\"",

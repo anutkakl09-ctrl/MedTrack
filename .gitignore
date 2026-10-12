@@ -7,4 +7,5 @@ coverage
 *.log
 data/*.json
 .tmp-production-data
+.tmp-*
 *.db
