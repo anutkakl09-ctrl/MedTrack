@@ -77,7 +77,7 @@ INTERNAL_API_TOKEN=длинный_случайный_секрет
 DATA_DIR=/persistent/medtrack-data
 ```
 
-Если хостинг поддерживает только один web-процесс, команда `npm start` собирает Mini App, поднимает API и раздает собранный frontend из `dist`. Она также запускает bot и worker через `server/all.ts`. Для поля «Главный файл» указывайте `index.js`. Этот файл запускает `server/all.ts`; `eslint.config.js` главным файлом быть не должен. На хостинге с отдельными процессами используйте `npm run start:api`, `npm run start:bot` и `npm run start:worker`.
+Если хостинг поддерживает только один web-процесс, команда `npm start` собирает Mini App, поднимает API и раздает собранный frontend из `dist`. Она также запускает bot и worker через `server/all.ts`. Для этого режима `server/all.ts` автоматически использует адрес Bothost из текущего deployment и создает общий внутренний токен на время работы контейнера, если эти две переменные не заданы в панели. Для поля «Главный файл» указывайте `index.js`. Этот файл запускает `server/all.ts`; `eslint.config.js` главным файлом быть не должен. На хостинге с отдельными процессами используйте `npm run start:api`, `npm run start:bot` и `npm run start:worker`, но там `MINI_APP_URL` и `INTERNAL_API_TOKEN` нужно задать вручную.
 
 Проект является Node.js/TypeScript-приложением, поэтому `requirements.txt` не используется. Для Docker уже добавлен `Dockerfile`: сборка выполняется через `npm ci` и `npm run build`, запуск контейнера — через `npm run start:all`.
 
