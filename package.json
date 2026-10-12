@@ -16,6 +16,7 @@
     "start:api": "tsx server/index.ts",
     "start:bot": "tsx server/bot.ts",
     "start:worker": "tsx server/worker.ts",
+    "build:web": "vite build",
     "build": "tsc --noEmit && vite build",
     "typecheck": "tsc --noEmit",
     "test": "vitest run --passWithNoTests",
@@ -31,6 +32,7 @@
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "tsx": "^4.23.15",
+    "vite": "^6.4.4",
     "zod": "^3.25.76"
   },
   "devDependencies": {
@@ -47,7 +49,6 @@
     "prettier": "^3.5.3",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.57.0",
-    "vite": "^6.3.5",
     "vitest": "^3.1.3"
   }
 }

@@ -38,7 +38,7 @@ npm run dev:bot
 npm run dev:worker
 ```
 
-Для production точкой входа API является `server/index.ts`, а соответствующая команда запуска — `npm run start:api` (или `npm start`). Бот и планировщик уведомлений работают отдельными процессами: `npm run start:bot` и `npm run start:worker`. Если хостинг просит главный файл веб-сервера, укажите `server/index.ts`; если он принимает команду запуска, используйте `npm run start:api`.
+Для production API запускается через `server/index.ts`, а единая точка входа для хостинга с одним процессом — `index.js`. Он собирает frontend при необходимости и запускает API, bot и worker. При раздельных процессах используйте `npm run start:api`, `npm run start:bot` и `npm run start:worker`.
 
 ## Проверки
 
@@ -77,7 +77,7 @@ INTERNAL_API_TOKEN=длинный_случайный_секрет
 DATA_DIR=/app/data
 ```
 
-Если хостинг поддерживает только один web-процесс, команда `npm start` собирает Mini App, поднимает API и раздает собранный frontend из `dist`. Она также запускает bot и worker через `server/all.ts`. Для этого режима `server/all.ts` автоматически использует адрес Bothost из текущего deployment и создает общий внутренний токен на время работы контейнера, если эти две переменные не заданы в панели. Для поля «Главный файл» указывайте `index.js`. Этот файл запускает `server/all.ts`; `eslint.config.js` главным файлом быть не должен. На Bothost укажите внутренний порт `3000`, переменную `PORT=3000` и включите запуск через `Dockerfile`. На хостинге с отдельными процессами используйте `npm run start:api`, `npm run start:bot` и `npm run start:worker`, но там `MINI_APP_URL` и `INTERNAL_API_TOKEN` нужно задать вручную.
+Если хостинг поддерживает только один web-процесс, команда `npm start` собирает Mini App, поднимает API и раздает собранный frontend из `dist`. Она также запускает bot и worker через `server/all.ts`. Если Bothost запускает главный файл напрямую, указывайте `index.js`: он автоматически выполнит `npm run build:web`, если `dist/index.html` еще нет, а затем запустит API, bot и worker. `eslint.config.js` главным файлом быть не должен. На Bothost укажите внутренний порт `3000`, переменную `PORT=3000` и включите запуск через `Dockerfile` либо главный файл `index.js`. На хостинге с отдельными процессами используйте `npm run start:api`, `npm run start:bot` и `npm run start:worker`, но там `MINI_APP_URL` и `INTERNAL_API_TOKEN` нужно задать вручную.
 
 Проект является Node.js/TypeScript-приложением, поэтому `requirements.txt` не используется. Для Docker уже добавлен `Dockerfile`: сборка выполняется через `npm ci` и `npm run build`, запуск контейнера — через `npm run start:all`.
 
