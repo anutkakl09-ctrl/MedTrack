@@ -14,6 +14,8 @@ WORKDIR /usr/src/medtrack
 ENV NODE_ENV=production
 ENV PORT=3000
 ENV DATA_DIR=/app/data
+ENV API_BASE_URL=https://bot-1791821989-5814-pharmagot.bothost.tech
+ENV MINI_APP_URL=https://bot-1791821989-5814-pharmagot.bothost.tech
 
 COPY package*.json ./
 RUN npm ci --omit=dev

@@ -69,9 +69,9 @@ npm run build
 NODE_ENV=production
 DEMO_MODE=false
 PORT=3000
-API_BASE_URL=https://your-domain.example
-MINI_APP_URL=https://your-domain.example
-VITE_API_URL=https://your-domain.example
+API_BASE_URL=https://bot-1791821989-5814-pharmagot.bothost.tech
+MINI_APP_URL=https://bot-1791821989-5814-pharmagot.bothost.tech
+VITE_API_URL=https://bot-1791821989-5814-pharmagot.bothost.tech
 TELEGRAM_BOT_TOKEN=получить_новый_токен_через_BotFather
 INTERNAL_API_TOKEN=длинный_случайный_секрет
 DATA_DIR=/app/data
