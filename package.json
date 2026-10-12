@@ -11,6 +11,7 @@
     "dev:bot": "tsx watch server/bot.ts",
     "dev:worker": "tsx watch server/worker.ts",
     "start": "npm run build && tsx server/all.ts",
+    "start:all": "tsx server/all.ts",
     "start:api": "tsx server/index.ts",
     "start:bot": "tsx server/bot.ts",
     "start:worker": "tsx server/worker.ts",

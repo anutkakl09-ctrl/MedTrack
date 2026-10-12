@@ -79,6 +79,8 @@ DATA_DIR=/persistent/medtrack-data
 
 Если хостинг поддерживает только один web-процесс, команда `npm start` собирает Mini App, поднимает API и раздает собранный frontend из `dist`. Она также запускает bot и worker через `server/all.ts`. На хостинге с отдельными процессами используйте `npm run start:api`, `npm run start:bot` и `npm run start:worker`.
 
+Проект является Node.js/TypeScript-приложением, поэтому `requirements.txt` не используется. Для Docker уже добавлен `Dockerfile`: сборка выполняется через `npm ci` и `npm run build`, запуск контейнера — через `npm run start:all`.
+
 Проверка доступности: `GET /api/health`. После запуска отправьте боту `/start`, затем откройте Mini App и создайте профиль. Пока пользователь не создал профиль, production-приложение покажет экран первичной настройки, а не демо-данные.
 
 ## Ограничение текущего MVP
