@@ -31,6 +31,7 @@ async function checkDueDoses() {
     medicationName: string;
     doseAmount: number;
     scheduledAt: string;
+    timezone?: string;
     instruction?: string;
     stockAmount: number;
     stockUnit: string;
@@ -40,10 +41,7 @@ async function checkDueDoses() {
 
   for (const dose of doses) {
     try {
-      const time = new Intl.DateTimeFormat('ru-RU', {
-        hour: '2-digit',
-        minute: '2-digit',
-      }).format(new Date(dose.scheduledAt));
+      const time = formatDoseTime(dose.scheduledAt, dose.timezone);
       const isAdvance = dose.notificationType === 'advance';
       await sendTelegram(
         dose.chatId,
@@ -71,6 +69,22 @@ async function checkDueDoses() {
     } catch (error) {
       console.error('Notification send error:', error instanceof Error ? error.message : error);
     }
+  }
+}
+
+function formatDoseTime(scheduledAt: string, timezone?: string) {
+  try {
+    return new Intl.DateTimeFormat('ru-RU', {
+      hour: '2-digit',
+      minute: '2-digit',
+      timeZone: timezone || 'Europe/Moscow',
+    }).format(new Date(scheduledAt));
+  } catch {
+    return new Intl.DateTimeFormat('ru-RU', {
+      hour: '2-digit',
+      minute: '2-digit',
+      timeZone: 'Europe/Moscow',
+    }).format(new Date(scheduledAt));
   }
 }
 

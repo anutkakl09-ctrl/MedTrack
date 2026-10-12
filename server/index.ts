@@ -941,6 +941,7 @@ app.get('/api/internal/due-doses', (req, res) => {
         medicationName: dose.medicationName,
         doseAmount: dose.doseAmount,
         scheduledAt: dose.scheduledAt,
+        timezone: profile.timezone,
         instruction: medication?.customInstruction,
         stockAmount: medication?.stockAmount || 0,
         stockUnit: medication?.stockUnit || 'шт.',
